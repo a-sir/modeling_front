@@ -1,0 +1,11 @@
+@(terms: List[results.ExpansionTerm])(implicit lang: Lang)
+@main(Messages("application.name")) {
+<table class="terms">
+@for(term <- terms) {
+<tr>
+<td>@term.id</td>
+<td>@term.name</td>
+<tr>
+}
+</table>
+}
