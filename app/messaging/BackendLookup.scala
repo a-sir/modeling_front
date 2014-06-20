@@ -8,7 +8,7 @@ package messaging
 import akka.actor._
 import com.typesafe.config.ConfigFactory
 
-object ActorRunner extends App {
+object BackendLookup {
 
   def confStr(port: Int) = "akka {\n" +
             "//loglevel = \"DEBUG\"\n" +
@@ -23,19 +23,26 @@ object ActorRunner extends App {
             "\n" +
             "}"
 
-  val system = ActorSystem("LocalSystem", ConfigFactory.parseString(confStr(0)))
-  val localActor = system.actorOf(Props[ActorRunner], name = "LocalActor")  // the local actor
-  localActor ! "START"
+  lazy val lookupActor: ActorRef = {
+    val system = ActorSystem("LocalSystem", ConfigFactory.parseString(confStr(0)))
+    val a: ActorRef = system.actorOf(Props[BackendLookupActor], name = "LocalActor")
+    println("Backend actor started")
+    a ! "handshake"
+    a
+  }
+
 }
 
-class ActorRunner extends Actor {
+class BackendLookupActor extends Actor {
 
   val remote = context.actorSelection("akka.tcp://ModelingActorSystem@127.0.0.1:2552/user/RemoteActor")
 
   def receive = {
+    case "handshake" =>
+      println("Send Ping to backend")
+      remote ! "Ping"
     case msg: String =>
-        remote ! "Hello from the LocalActor"
-
-        println("LocalActor received message: " + msg)
+      println("Received " + msg)
+      remote ! "Thanks for message " + msg + " from front actor"
   }
 }

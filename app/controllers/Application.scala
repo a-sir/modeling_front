@@ -1,5 +1,6 @@
 package controllers
 
+import messaging.BackendLookup
 import play.api.mvc._
 import results._
 
@@ -10,6 +11,7 @@ object Application extends Controller {
   }
 
   def request(query: String) = Action {
+      BackendLookup.lookupActor ! query
       Ok(views.html.requested(query))
   }
 
