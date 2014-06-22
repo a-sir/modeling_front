@@ -1,6 +1,6 @@
 package controllers
 
-import akka.util.Timeout
+import play.api.libs.json._
 import messaging.BackendLookup
 import play.api.mvc._
 import results._
@@ -23,7 +23,12 @@ object Application extends Controller {
   def request(query: String) = Action {
     request =>
       request.session.get("id").map { id =>
-        BackendLookup.lookupActor ! "query:" + query.trim
+
+        val q = Json.obj(
+          "sessionId" -> id,
+          "query" -> query
+        )
+        BackendLookup.lookupActor ! "query:" + q.toString()
         Ok(views.html.requested(query, id))
       }.getOrElse {
         Ok("Not authorized request. Go to mainpage.").withNewSession
