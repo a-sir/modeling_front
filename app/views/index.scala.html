@@ -1,7 +1,9 @@
+@(sessionId: String)
 @main("QA query expansion") {
 
 <form name="prepare_query_form" action="/request" method="get">
 Query: <input type="text" name="query"><input type="submit" value="Ок">
 </form>
-    
+
+<p>Session: @sessionId</p>
 }

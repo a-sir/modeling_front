@@ -1,4 +1,4 @@
-@(query: String)
+@(query: String, sessionId :String)
 <!DOCTYPE html>
 <html>
 <head lang="en">
@@ -7,5 +7,7 @@
 </head>
 <body>
 @query is processing
+
+<p>Session: @sessionId</p>
 </body>
 </html>
