@@ -7,6 +7,7 @@ package messaging
 
 import akka.actor._
 import com.typesafe.config.ConfigFactory
+import play.api.libs.json.{JsNull, JsValue, Json, JsObject}
 
 object BackendLookup {
 
@@ -30,6 +31,8 @@ object BackendLookup {
     a
   }
 
+  var states: Map[String, JsValue] = Map.empty
+
 }
 
 class BackendLookupActor extends Actor {
@@ -40,6 +43,21 @@ class BackendLookupActor extends Actor {
     case msg: String =>
       if (sender.path.toString.contains("ModelingActorSystem@127.0.0.1:2552/user/InterfaceActor")) {
         println("Received from remote: " + msg)
+        if (msg.startsWith("status_update:")) {
+         val o = Json.parse(msg.substring(14))
+          val sessionId = (o \ "sessionId").as[String]
+          val status = o \ "status"
+          status match {
+            case JsNull =>
+              BackendLookup.states -= sessionId
+              println("SessionId " + sessionId + " is not on backend")
+            case _ =>
+              BackendLookup.states += sessionId -> status.as[JsObject]
+              println("SessionId " + sessionId + " gets status update")
+          }
+          BackendLookup.states += sessionId -> status
+          println("Status of session" + sessionId + ": " + status.toString())
+        }
       } else {
         println("Resend to remote " + msg)
         remote ! msg
