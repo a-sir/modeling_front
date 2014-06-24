@@ -29,10 +29,27 @@ object Application extends Controller {
           "query" -> query
         )
         BackendLookup.lookupActor ! "query:" + q.toString()
-        Ok(views.html.requested(query, id))
+        Ok(views.html.requested(query, id, "requested"))
       }.getOrElse {
         Ok("Not authorized request. Go to mainpage.").withNewSession
       }
+  }
+
+  def queryStatus() = Action {
+    request =>
+        request.session.get("id").map { id =>
+          BackendLookup.states.get(id) match {
+            case v: Some[JsValue] =>
+              val origQuery = (v.get \ "orig_query").toString()
+              (v.get \ "state").toString() match {
+                case "failed" => Ok(views.html.failed_lemm(origQuery, id, (v.get \ "state_description").toString()))
+                case _ => Ok(views.html.requested(origQuery, id, v.toString))
+              }
+            case _ => Ok("No requests for this session.").withNewSession;
+          }
+        }.getOrElse {
+          Ok("Not authorized request. Go to mainpage.").withNewSession
+        }
   }
 
   def result() = Action {
