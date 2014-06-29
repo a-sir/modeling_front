@@ -29,6 +29,7 @@ object Application extends Controller {
           "query" -> query
         )
         BackendLookup.lookupActor ! "query:" + q.toString()
+        BackendLookup.states += id -> Json.obj("orig_query" -> query, "state" -> "requested")
         Ok(views.html.requested(query, id, "requested"))
       }.getOrElse {
         Ok("Not authorized request. Go to mainpage.").withNewSession
@@ -37,6 +38,8 @@ object Application extends Controller {
 
   def queryStatus() = Action {
     request =>
+      println("States: " + BackendLookup.states)
+      println("Id from cookies: " + request.session.get("id"))
         request.session.get("id").map { id =>
           BackendLookup.states.get(id) match {
             case v: Some[JsValue] =>
@@ -45,7 +48,8 @@ object Application extends Controller {
                 case "failed" => Ok(views.html.failed_lemm(origQuery, id, (v.get \ "state_description").toString()))
                 case _ => Ok(views.html.requested(origQuery, id, v.toString))
               }
-            case _ => Ok("No requests for this session.").withNewSession;
+            case None => Ok("No requests for this session.");
+            case _ => Ok("States:" + BackendLookup.states)
           }
         }.getOrElse {
           Ok("Not authorized request. Go to mainpage.").withNewSession
