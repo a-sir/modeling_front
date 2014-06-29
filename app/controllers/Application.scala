@@ -43,10 +43,17 @@ object Application extends Controller {
         request.session.get("id").map { id =>
           BackendLookup.states.get(id) match {
             case v: Some[JsValue] =>
-              val origQuery = (v.get \ "orig_query").toString()
-              (v.get \ "state").toString() match {
-                case "failed" => Ok(views.html.failed_lemm(origQuery, id, (v.get \ "state_description").toString()))
-                case _ => Ok(views.html.requested(origQuery, id, v.toString))
+              val origQuery = (v.get \ "orig_query").as[String]
+              (v.get \ "state").as[String] match {
+                case "submitted" =>
+                  Ok(views.html.requested(origQuery, id, "submitted"))
+                case "failed" =>
+                  Ok(views.html.failed_lemm(origQuery, id, (v.get \ "state_description").toString()))
+                case "derived" =>
+                  Ok(views.html.derived(id, origQuery, formatSymbolsTable((v.get \ "derivation_result").as[String])))
+                case s: String =>
+                  println("Don't know how to interpret state: " + s)
+                  Ok(views.html.index(id))
               }
             case None => Ok("No requests for this session.");
             case _ => Ok("States:" + BackendLookup.states)
@@ -54,6 +61,22 @@ object Application extends Controller {
         }.getOrElse {
           Ok("Not authorized request. Go to mainpage.").withNewSession
         }
+  }
+
+  def formatSymbolsTable(encoded: String): List[Tuple3[Int, String, Double]] = {
+    java.net.URLDecoder.decode(encoded, "UTF-8").split("\n")
+      .foldLeft(List[Tuple3[Int, String, Double]]())(
+        (a: List[Tuple3[Int, String, Double]], b: String) =>
+          b match {
+            case "" => a
+            case s: String => parse(b) :: a
+          }
+      ).sortWith((a, b) => a._3 > b._3)
+  }
+
+  def parse(line: String): Tuple3[Int, String, Double] = {
+    val tokens = line.split("\t")
+    Tuple3(tokens(0).toInt, tokens(1), tokens(2).toDouble)
   }
 
   def result() = Action {
