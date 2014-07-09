@@ -30,7 +30,7 @@ object Application extends Controller {
         )
         BackendLookup.lookupActor ! "query:" + q.toString()
         BackendLookup.states += id -> Json.obj("orig_query" -> query, "state" -> "requested")
-        Ok(views.html.requested(query, id, "requested"))
+        TemporaryRedirect("/query_status")
       }.getOrElse {
         Ok("Not authorized request. Go to mainpage.").withNewSession
       }
