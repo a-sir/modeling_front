@@ -47,10 +47,14 @@ object Application extends Controller {
               (v.get \ "state").as[String] match {
                 case "submitted" =>
                   Ok(views.html.requested(origQuery, id, "submitted"))
+                case "requested" =>
+                  Ok(views.html.requested(origQuery, id, "requested"))
                 case "failed" =>
                   Ok(views.html.failed_lemm(origQuery, id, (v.get \ "state_description").toString()))
                 case "derived" =>
-                  Ok(views.html.derived(id, origQuery, formatSymbolsTable((v.get \ "derivation_result").as[String])))
+                  val derivationResult = (v.get \ "derivation_result").as[String]
+                  Console.out.println(derivationResult)
+                  Ok(views.html.derived(id, origQuery, formatSymbolsTable(derivationResult)))
                 case s: String =>
                   println("Don't know how to interpret state: " + s)
                   Ok(views.html.index(id))
