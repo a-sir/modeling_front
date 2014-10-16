@@ -1,4 +1,4 @@
-@(id: String, query: String, syms: List[Tuple3[Int, String, Double]])
+@(id: String, query: String, syms: String)
 <!DOCTYPE html>
 <html>
 <head lang="en">
@@ -7,18 +7,24 @@
 </head>
 <body>
 
-SessionId:@id
-<br>
 Query: @query
 <br>
 
-<table>
-    @for(sym <- syms) {
-      <tr>
-          <td>@sym._2</td>
-          <td>@sym._3</td>
-      </tr>
-    }
-</table>
+<script type="text/javascript">
+var obj = JSON.parse('@Html(syms)')
+document.write("<table border=1>");
+for (var i = 0 ; i < obj.syms.length; i++) {
+	document.write("<tr><td valign=\"top\">")
+	
+	var isym = obj.syms[i];
+	document.write("Symbol:<br>Inverted cost:</td><td valign=\"top\">" + isym["gsym"].name + "<br>" + isym["invCost"] + "</td><td valign=\"top\">")
+	for (var j = 0 ; j < isym["chains"].length; j++) {
+		document.write("#" + (j + 1) + ") " + isym["chains"][j] + " <br>");
+	}
+	document.write("</td></tr>")
+}
+document.write("</table>");
+</script>
+
 </body>
 </html>
