@@ -19,6 +19,7 @@ object BackendLookup {
     "    netty.tcp {\n" +
     "      hostname = \"127.0.0.1\"\n" +
     "      port = " + port + "\n" +
+    "      maximum-frame-size = 1024000\n" +
     "    }\n" +
     "  }" +
     "\n" +
