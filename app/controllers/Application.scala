@@ -1,10 +1,12 @@
 package controllers
 
+import util.Html._
 import play.api.libs.json._
 import messaging.BackendLookup
 import play.api.mvc._
 import results._
 import scala.util.Random
+
 
 object Application extends Controller {
   
@@ -53,8 +55,8 @@ object Application extends Controller {
                 case "derived" =>
                   Ok(views.html.derived(
                       id, origQuery, 
-                      java.net.URLDecoder.decode((v.get \ "derivation_result").as[String], "UTF-8")
-                      )) 
+                      escapeQuotes(java.net.URLDecoder.decode((v.get \ "derivation_result").as[String], "UTF-8"))
+                      ))
                 case s: String =>
                   println("Don't know how to interpret state: " + s)
                   Ok(views.html.index(id))
