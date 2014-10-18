@@ -4,6 +4,7 @@
 
 # Home page
 GET     /                           controllers.Application.index
+GET     /index                      controllers.Application.index
 GET     /request                    controllers.Application.request(query: String)
 GET     /result                     controllers.Application.result
 GET     /query_status               controllers.Application.queryStatus
