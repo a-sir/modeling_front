@@ -18,7 +18,11 @@ for (var i = 0 ; i < obj.syms.length; i++) {
 	document.write("<tr><td valign=\"top\">")
 	
 	var isym = obj.syms[i];
-	document.write("Symbol:<br>Inverted cost:</td><td valign=\"top\">" + isym["gsym"].name + "<br>" + isym["invCost"] + "</td><td valign=\"top\">")
+	document.write(
+	    "<table border=0>" +
+	      "<tr><td>Symbol:</td><td>" + isym["gsym"].name + 
+	      "</td></tr><tr><td>Inverted cost:</td><td>" + isym["invCost"] + 
+	      "</td></tr><tr><td>Source usage:</td><td>" + isym["srcUsage"] + "</td></tr></table><br>")
 	for (var j = 0 ; j < isym["chains"].length; j++) {
 		document.write("#" + (j + 1) + ") " + isym["chains"][j] + " <br>");
 	}
