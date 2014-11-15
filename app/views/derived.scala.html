@@ -28,16 +28,18 @@ Query: @query
 <script type="text/javascript">
 var obj = JSON.parse('@Html(syms)')
 obj.syms.sort(function(a,b) { return parseFloat(b["invCost"]) - parseFloat(a["invCost"]) } );
-document.write("<table border=1 align=center><tr> <td>Term</td> <td>Inverted cost</td> <td>Source usage</td> <td>derivation details</td></tr>");
+document.write("<table border=1 align=center ><tr> <td align=center>Term</td> <td align=center>Connection strength</td> <td align=center>Source usage</td> <td align=center>Details</td></tr>");
 
 for (var i = 0 ; i < obj.syms.length; i++) {
 	document.write("<tr>")
 	var isym = obj.syms[i];
+	var invCost=Number((isym["invCost"]).toFixed(2))
+	var scrUsage=Number((isym["srcUsage"]).toFixed(2))
 	document.write(
-	      "<td>" + isym["gsym"].name + "</td>" +
-	      "<td>" + isym["invCost"] + "</td>" +
-	      "<td>" + isym["srcUsage"] + "</td>")
-	document.write("<td><div><a href=\"javascript:showHide('chains_" + isym["gsym"].key + "');\">expand/hide</a></div>")
+	      "<td align=right>" + isym["gsym"].name + "</td>" +
+	      "<td align=center>" + invCost + "</td>" +
+	      "<td align=center>" + scrUsage + "</td>")
+	document.write("<td><div align=center><a href=\"javascript:showHide('chains_" + isym["gsym"].key + "');\">expand/hide</a></div>")
 	document.write("<div id=\"chains_" + isym["gsym"].key + "\" style=\"display:none\">")
 	for (var j = 0 ; j < isym["chains"].length; j++) {
 		document.write("#" + (j + 1) + ") " + isym["chains"][j] + "<br>");
