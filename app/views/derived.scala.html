@@ -4,6 +4,15 @@
 <head lang="en">
     <meta charset="UTF-8">
     <title>Query is processing</title>
+    <script type="text/javascript">
+		function showHide(elementid){
+		    if (document.getElementById(elementid).style.display == 'none'){
+		        document.getElementById(elementid).style.display = '';
+		    } else {
+		        document.getElementById(elementid).style.display = 'none';
+		    }
+		}
+    </script>
 </head>
 <body>
 
@@ -23,10 +32,12 @@ for (var i = 0 ; i < obj.syms.length; i++) {
 	      "<tr><td>Symbol:</td><td>" + isym["gsym"].name + 
 	      "</td></tr><tr><td>Inverted cost:</td><td>" + isym["invCost"] + 
 	      "</td></tr><tr><td>Source usage:</td><td>" + isym["srcUsage"] + "</td></tr></table><br>")
+	document.write("<div><a href=\"javascript:showHide('chains_" + isym["gsym"].key + "');\">derivation details...</a></div>")
+	document.write("<div id=\"chains_" + isym["gsym"].key + "\" style=\"display:none\">")
 	for (var j = 0 ; j < isym["chains"].length; j++) {
 		document.write("#" + (j + 1) + ") " + isym["chains"][j] + " <br>");
 	}
-	document.write("</td></tr>")
+	document.write("</div></td></tr>")
 }
 document.write("</table>");
 </script>
