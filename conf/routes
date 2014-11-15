@@ -5,7 +5,6 @@
 # Home page
 GET     /                           controllers.Application.index
 GET     /request                    controllers.Application.request(query: String)
-GET     /result                     controllers.Application.result
 GET     /query_status               controllers.Application.queryStatus
 
 # Map static resources from the /public folder to the /assets URL path

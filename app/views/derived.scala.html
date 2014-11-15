@@ -15,9 +15,13 @@
     </script>
 </head>
 <body>
+<form name="prepare_query_form" action="/request" method="get">
+Next query: <input type="text" name="query"><input type="submit" value="Ок">
+</form>
 
+<br><br>
 Query: @query
-<br>
+<br><br>
 
 <script type="text/javascript">
 var obj = JSON.parse('@Html(syms)')

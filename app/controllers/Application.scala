@@ -85,7 +85,4 @@ object Application extends Controller {
     Tuple3(tokens(0).toInt, tokens(1), tokens(2).toDouble)
   }
 
-  def result() = Action {
-      Ok(views.html.list(ExpansionTerm.mockTerms))
-  }
 }
