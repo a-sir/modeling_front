@@ -4,6 +4,8 @@
 <head lang="en">
     <meta charset="UTF-8">
     <title>Query is processing</title>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap-theme.min.css">
     <script type="text/javascript">
 		function showHide(elementid){
 		    if (document.getElementById(elementid).style.display == 'none'){
@@ -26,7 +28,7 @@ Query: @query
 <script type="text/javascript">
 var obj = JSON.parse('@Html(syms)')
 obj.syms.sort(function(a,b) { return parseFloat(b["invCost"]) - parseFloat(a["invCost"]) } );
-document.write("<table border=1><tr> <td>Term</td> <td>Inverted cost</td> <td>Source usage</td> <td>derivation details</td></tr>");
+document.write("<table border=1 align=center><tr> <td>Term</td> <td>Inverted cost</td> <td>Source usage</td> <td>derivation details</td></tr>");
 
 for (var i = 0 ; i < obj.syms.length; i++) {
 	document.write("<tr>")
