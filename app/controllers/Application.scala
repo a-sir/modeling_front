@@ -20,6 +20,13 @@ object Application extends Controller {
         Ok(views.html.index(sessionId)).withSession("id" -> sessionId)
       }
   }
+  
+  def logRequest = Action {
+    request =>
+      val message = "Received header:\n" + request.headers.toString
+      println(message)
+      Ok(message)
+  }
 
   def request(query: String) = Action {
     request =>
