@@ -1,12 +1,17 @@
-@(id: String, query: String, syms: String)
-<!DOCTYPE html>
-<html>
-<head lang="en">
-    <meta charset="UTF-8">
-    <title>Query is processing</title>
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap-theme.min.css">
-    <script type="text/javascript">
+@(query: String, syms: String)
+
+@page("Expansion terms are ready"){
+	<h3>Expansion terms are ready</h3>
+	<form role="form" action="/request" method="get">
+    <div class="form-group">
+      <label for="query">Query:</label>
+      <input type="text" class="form-control" id="query" name="query" placeholder="Input query">
+    </div>
+    
+    <button type="submit" class="btn btn-default">Submit</button>
+    </form>
+} {
+<script type="text/javascript">
 		function showHide(elementid){
 		    if (document.getElementById(elementid).style.display == 'none'){
 		        document.getElementById(elementid).style.display = '';
@@ -15,12 +20,6 @@
 		    }
 		}
     </script>
-</head>
-<body>
-<script type="text/javascript" src='@routes.Assets.at("javascripts/google-analytics-snippet.js")'></script>
-<form name="prepare_query_form" action="/request" method="get">
-Next query: <input type="text" name="query"><input type="submit" value="Ок">
-</form>
 
 <br><br>
 Query: @query
@@ -49,8 +48,4 @@ for (var i = 0 ; i < obj.syms.length; i++) {
 }
 document.write("</table>");
 </script>
-<div style="position: absolute; top: 5px; right: 5px;  text-color: green">
-    alexander.sirenko&#10052;gmail.com, 2014
-</div>
-</body>
-</html>
+}

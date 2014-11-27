@@ -1,24 +1,11 @@
-@(query: String, sessionId :String, description: String)
-<!DOCTYPE html>
-<html>
-<head lang="en">
-    <meta charset="UTF-8">
-    <title>Query is processing</title>
-    <script type="text/javascript">
+@(query: String, description: String)
+
+@page("Query is processing"){
+	<h3>Query is processing</h3>
+} {
+	<script type="text/javascript">
     window.setTimeout(function(){ document.location.reload(true); }, 5000);
     </script>
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap-theme.min.css">
-</head>
-<body>
-<script type="text/javascript" src='@routes.Assets.at("javascripts/google-analytics-snippet.js")'></script>
-Query: @query - @description
-
-<br> Please, wait.
-
-<!-- <p>Session: @sessionId</p> -->
-<div style="position: absolute; top: 5px; right: 5px;  text-color: green">
-    alexander.sirenko&#10052;gmail.com, 2014
-</div>
-</body>
-</html>
+    Query: @query - @description
+<br> Please, wait.  
+}

@@ -13,11 +13,11 @@ object Application extends Controller {
   def index = Action {
     request =>
       request.session.get("id").map { id =>
-        Ok(views.html.index(id))
+        Ok(views.html.index())
       }.getOrElse {
         val sessionId = Random.nextString(10)
         println("New user gets id:" + sessionId)
-        Ok(views.html.index(sessionId)).withSession("id" -> sessionId)
+        Ok(views.html.index()).withSession("id" -> sessionId)
       }
   }
   
@@ -26,6 +26,13 @@ object Application extends Controller {
       val message = "Received header:\n" + request.headers.toString
       println(message)
       Ok(message)
+  }
+  
+  def page = Action {
+    request =>
+      val message = "Received header:\n" + request.headers.toString
+      println(message)
+      Ok(views.html.index())
   }
 
   def request(query: String) = Action {
@@ -54,19 +61,19 @@ object Application extends Controller {
               val origQuery = (v.get \ "orig_query").as[String]
               (v.get \ "state").as[String] match {
                 case "submitted" =>
-                  Ok(views.html.requested(origQuery, id, "submitted"))
+                  Ok(views.html.requested(origQuery, "submitted"))
                 case "requested" =>
-                  Ok(views.html.requested(origQuery, id, "requested"))
+                  Ok(views.html.requested(origQuery, "requested"))
                 case "failed" =>
-                  Ok(views.html.failed_lemm(origQuery, id, (v.get \ "state_description").toString()))
+                  Ok(views.html.failed_lemm(origQuery, (v.get \ "state_description").toString()))
                 case "derived" =>
                   Ok(views.html.derived(
-                      id, origQuery, 
+                      origQuery, 
                       escapeQuotes(java.net.URLDecoder.decode((v.get \ "derivation_result").as[String], "UTF-8"))
                       ))
                 case s: String =>
                   println("Don't know how to interpret state: " + s)
-                  Ok(views.html.index(id))
+                  Ok(views.html.index())
               }
             case None => Ok("No requests for this session.");
             case _ => Ok("States:" + BackendLookup.states)

@@ -7,6 +7,7 @@ GET     /                           controllers.Application.index
 GET     /request                    controllers.Application.request(query: String)
 GET     /query_status               controllers.Application.queryStatus
 GET     /logRequest                 controllers.Application.logRequest
+GET		/page						controllers.Application.page
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.at(path="/public", file)

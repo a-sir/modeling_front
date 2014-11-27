@@ -1,20 +1,12 @@
-@(sessionId: String)
-<!DOCTYPE html>
-<html>
-<head lang="en"> <meta charset="UTF-8">
-    <title>Query is processing</title>
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap-theme.min.css">
-</head>
-<body>
-	<script type="text/javascript" src='@routes.Assets.at("javascripts/google-analytics-snippet.js")'></script>
-	<form name="prepare_query_form" action="/request" method="get">
-		Query: <input type="text" name="query"><input type="submit" value="Ок">
-	</form>
-<!-- <p>Session: @sessionId</p> -->
-
-<div style="position: absolute; top: 5px; right: 5px;  text-color: green">
-    alexander.sirenko&#10052;gmail.com, 2014
-</div>
-</body>
-</html>
+@page("Input query"){
+	<h3> Input query </h3>
+} {
+  <form role="form" action="/request" method="get">
+    <div class="form-group">
+      <label for="query">Query:</label>
+      <input type="text" class="form-control" id="query" name="query" placeholder="Input query">
+    </div>
+    
+    <button type="submit" class="btn btn-default">Submit</button>
+    </form>
+}

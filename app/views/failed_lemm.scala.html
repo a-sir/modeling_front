@@ -1,18 +1,16 @@
-@(query: String, sessionId :String, description: String)
-<!DOCTYPE html>
-<html>
-<head lang="en">
-    <meta charset="UTF-8">
-    <title>Query is processing</title>
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap-theme.min.css">
-</head>
-<body>
-<script type="text/javascript" src='@routes.Assets.at("javascripts/google-analytics-snippet.js")'></script>
-@query failed: @description
-<!-- <p>Session: @sessionId</p> -->
-<div style="position: absolute; top: 5px; right: 5px;  text-color: green">
-    alexander.sirenko&#10052;gmail.com, 2014
-</div>
-</body>
-</html>
+@(query: String, description: String)
+
+@page("Query failed"){
+	<h3>Query failed</h3>
+} {
+	@query failed: @description
+	
+	<form role="form" action="/request" method="get">
+    <div class="form-group">
+      <label for="query">Query:</label>
+      <input type="text" class="form-control" id="query" name="query" placeholder="Input query">
+    </div>
+    
+    <button type="submit" class="btn btn-default">Submit</button>
+    </form> 
+}
