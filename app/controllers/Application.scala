@@ -82,6 +82,10 @@ object Application extends Controller {
           Ok("Not authorized request. Go to mainpage.").withNewSession
         }
   }
+  
+  def about = Action {
+    request => Ok(views.html.about())
+  }
 
   def formatSymbolsTable(encoded: String): List[Tuple3[Int, String, Double]] = {
     java.net.URLDecoder.decode(encoded, "UTF-8").split("\n")
